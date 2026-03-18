@@ -1,0 +1,30 @@
+mat-nav-list {
+  width: 240px;
+}
+
+mat-nav-list a {
+  color: white;
+}
+mat-nav-list a .mdc-list-item__primary-text {
+  color: rgb(235, 230, 230);
+}
+
+mat-nav-list mat-icon {
+  color: white;
+}
+
+mat-nav-list a:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+mat-nav-list a.active {
+  background: rgba(255, 255, 255, 0.25);
+  font-weight: 500;
+  margin: 5px;
+}
+
+mat-nav-list a {
+  border-radius: 8px;
+  margin: 4px 8px;
+  transition: 0.2s;
+}

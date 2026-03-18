@@ -1,0 +1,87 @@
+<div class="voucher-container">
+  <h1>{{ 'VOUCHERS' | translate }}</h1>
+  <mat-card class="filter-container">
+    <button mat-raised-button color="primary" type="button" (click)="openDialog()">
+      <mat-icon>filter_alt </mat-icon>
+      {{ 'FILTER' | translate }}
+      <span>({{ l < 0 ? '0' : l }})</span>
+    </button>
+  </mat-card>
+
+  <mat-card>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="promotion_id">
+        <th mat-header-cell *matHeaderCellDef>{{ 'PROMOTION_ID' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="promotion-id-container">
+            {{ element.promotion_id }}
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="voucher_code">
+        <th mat-header-cell *matHeaderCellDef>{{ 'VOUCHER_CODE' | translate }}</th>
+        <td mat-cell *matCellDef="let element">{{ element.voucher_code }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>{{ 'NAME' | translate }}</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="brand">
+        <th mat-header-cell *matHeaderCellDef>{{ 'BRAND' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="brand-container">
+            <span *ngFor="let brand of element.apply_brands" class="brand-badge">
+              {{ brand }}
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef>{{ 'TIME' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <ul class="list-promotions">
+            <li>From: {{ element.start_time | date: 'dd-MM-yyyy HH-mm-ss' }}</li>
+            <li>To: {{ element.end_time | date: 'dd-MM-yyyy HH-mm-ss' }}</li>
+          </ul>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{ 'STATUS' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="status" [ngClass]="element.voucher_status?.toLowerCase()">
+            {{ element.voucher_status }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="end_date">
+        <th mat-header-cell *matHeaderCellDef>{{ 'END' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.end_time | date: 'dd-MM-yyyy' }}
+        </td>
+      </ng-container> -->
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length" style="text-align: center">
+          {{ 'NO_DATA' | translate }}
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator
+      [length]="total"
+      [pageSize]="filter.size"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="pageChange($event)"
+    >
+    </mat-paginator>
+  </mat-card>
+</div>

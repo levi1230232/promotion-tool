@@ -1,0 +1,101 @@
+<div class="promotion-container">
+  <div class="promotion-header">
+    <h1>{{ 'PROMOTIONS' | translate }}</h1>
+    <button
+      mat-fab
+      extended
+      class="custom-size-fab"
+      color="primary"
+      type="button"
+      (click)="openDialog()"
+    >
+      <mat-icon>add</mat-icon>
+      {{ 'NEW PROMOTION' | translate }}
+    </button>
+  </div>
+  <mat-card class="filter-container">
+    <div></div>
+    <!-- <div class="action-button"> -->
+    <button mat-raised-button color="primary" type="button" (click)="openDialog()">
+      <mat-icon>filter_alt</mat-icon>
+      {{ 'FILTER' | translate }}
+      <span>({{ filterCount }})</span>
+    </button>
+    <!-- </div> -->
+  </mat-card>
+  <mat-card>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="promotion_id">
+        <th mat-header-cell *matHeaderCellDef>{{ 'PROMOTION_ID' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="promotion-id-container">
+            {{ element.promotion_id }}
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>{{ 'NAME' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="brand">
+        <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'BRAND' | translate }}</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <div class="brand-container">
+            <span *ngFor="let brand of element.apply_brands" class="brand-badge">
+              {{ brand }}
+            </span>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="discount_type">
+        <th mat-header-cell *matHeaderCellDef>{{ 'DISCOUNT_TYPE' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <ul class="list-promotions">
+            <li>Min Order: {{ element.min_order_value ? element.min_order_value + ' đ' : '-' }}</li>
+            <li>Discount Max: {{ element.discount_max ? element.discount_max + ' đ' : '-' }}</li>
+            <li>Type: {{ element.discount_type }}</li>
+          </ul>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef>{{ 'TIME' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <ul class="list-promotions">
+            <li>From: {{ element.start_time | date: 'dd-MM-yyyy HH-mm-ss' }}</li>
+            <li>To: {{ element.end_time | date: 'dd-MM-yyyy HH-mm-ss' }}</li>
+          </ul>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{ 'STATUS' | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="status" [ngClass]="element.status?.toLowerCase()">{{ element.status }}</span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length" style="text-align: center">
+          {{ 'NO_DATA' | translate }}
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator
+      [length]="total"
+      [pageSize]="filter.size"
+      [pageIndex]="filter.page - 1"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="pageChange($event)"
+    >
+    </mat-paginator>
+  </mat-card>
+</div>
+s

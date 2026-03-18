@@ -1,0 +1,21 @@
+{
+  "HOME": "Home",
+  "PROFILE": "Profile",
+  "CHANGE_PASSWORD": "Change Password",
+  "LOGOUT": "Logout",
+  "PROMOTIONS": "Promotions",
+  "VOUCHERS": "Vouchers",
+  "SEARCH": "Search",
+  "RESET": "Reset",
+  "PROMOTION_ID": "Promotion ID",
+  "NAME": "Name",
+  "BRAND": "Brand",
+  "STATUS": "Status",
+  "TIME": "Applicable period",
+  "END": "End",
+  "VOUCHER_CODE": "Voucher Code",
+  "NO_DATA": "Not Found",
+  "DISCOUNT_TYPE": "Discount type",
+  "FILTER": "Filter",
+  "NEW PROMOTION": "New Promotion"
+}

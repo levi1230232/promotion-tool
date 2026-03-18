@@ -1,0 +1,28 @@
+.layout-container {
+  height: calc(100vh - 64px);
+}
+
+mat-sidenav {
+  width: 250px;
+  background: #5d6c8f;
+  color: white;
+}
+
+mat-sidenav * {
+  color: white;
+}
+mat-sidenav-content {
+  background: #f8fafc;
+}
+
+.page-content {
+  padding: 30px;
+}
+
+app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 64px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

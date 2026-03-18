@@ -1,0 +1,41 @@
+<div class="filter-container">
+  <div>
+    <h2 mat-dialog-title class="filter-title">Filter</h2>
+    <ng-container *ngFor="let field of fields">
+      <mat-form-field appearance="outline" *ngIf="!field.group && field.type === 'text'">
+        <mat-label>{{ field.label }}</mat-label>
+        <input matInput [(ngModel)]="filter[field.key]" [placeholder]="field.placeholder" />
+        <mat-icon matSuffix color="primary" style="opacity: 0.5; font-size: 20px">search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="!field.group && field.type === 'select'">
+        <mat-label>{{ field.label }}</mat-label>
+        <mat-select [(ngModel)]="filter[field.key]">
+          <mat-option *ngFor="let opt of field.options" [value]="opt === 'ALL' ? '' : opt">
+            {{ opt }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        *ngIf="field.type === 'date-range'"
+        class="date-range-field"
+      >
+        <mat-label>{{ field.label }}</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="From" [(ngModel)]="filter[field.key + '_from']" />
+          <input matEndDate placeholder="To" [(ngModel)]="filter[field.key + '_to']" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </ng-container>
+  </div>
+  <div class="filter-action">
+    <button mat-button (click)="clearFilter()"><mat-icon>restart_alt</mat-icon> Reset</button>
+    <button mat-raised-button color="primary" (click)="submitSearch()">
+      <mat-icon>filter_alt</mat-icon> Filter
+    </button>
+  </div>
+</div>

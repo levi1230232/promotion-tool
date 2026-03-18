@@ -1,0 +1,127 @@
+.voucher-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.mat-header-cell {
+  font-weight: 600;
+}
+
+.mat-cell,
+.mat-header-cell {
+  padding: 12px 16px;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status.used {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.status.expired {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.status.lock {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.status.pending {
+  background-color: #fffde7;
+  color: #f9a825;
+}
+
+mat-card {
+  padding: 20px;
+}
+
+mat-paginator {
+  margin-top: 16px;
+}
+mat-card button {
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .filter-container {
+    justify-content: flex-start;
+  }
+
+  .filter-container mat-form-field {
+    width: 100%;
+  }
+}
+.mat-column-brand {
+  text-align: center;
+  justify-content: center;
+}
+
+.brand-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin: 10px;
+}
+.brand-badge {
+  background-color: #e0e0e0;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.mat-column-promotion_id .promotion-id-container {
+  background-color: rgb(117, 117, 228);
+  margin: 0;
+  padding: 10px;
+  border-radius: 6px;
+  color: rgb(230, 230, 241);
+}
+.mat-mdc-cell {
+  justify-content: center;
+  text-align: center;
+  height: 70px;
+}
+.mat-mdc-header-cell {
+  justify-content: center;
+  text-align: center;
+}
+.list-promotions {
+  list-style: none;
+}
+td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-time.mat-column-time {
+  text-align: left;
+  font-size: 13px;
+}

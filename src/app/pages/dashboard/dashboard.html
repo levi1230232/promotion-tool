@@ -1,0 +1,13 @@
+<app-header (toggleSidebar)="sidenav.toggle()"></app-header>
+
+<mat-sidenav-container class="layout-container">
+  <mat-sidenav #sidenav mode="side">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

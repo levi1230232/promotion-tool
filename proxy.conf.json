@@ -1,0 +1,8 @@
+{
+  "/ipos": {
+    "target": "https://apitest.foodbook.vn",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

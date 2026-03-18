@@ -1,0 +1,159 @@
+.promotion-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+.promotion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.mat-mdc-header-row {
+  background: #f5f7fa;
+}
+
+.mat-mdc-header-cell {
+  font-weight: 600;
+  color: #333;
+}
+
+.mat-mdc-row:hover {
+  background: #fafafa;
+}
+
+mat-card {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+mat-paginator {
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-form mat-form-field {
+    width: 100%;
+  }
+}
+.status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.status.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status.used {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.status.expired {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.status.lock {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.status.pending {
+  background-color: #fffde7;
+  color: #f9a825;
+}
+.status.completed {
+  background-color: #ede7f6;
+  color: #6a1b9a;
+}
+.status.cancelled {
+  background-color: #fbe9e7;
+  color: #d84315;
+}
+.list-promotions {
+  list-style: none;
+}
+.mat-mdc-header-cell {
+  justify-content: center;
+  text-align: center;
+}
+.mat-mdc-cell {
+  /* justify-content: center; */
+  text-align: center;
+  height: 70px;
+}
+.mat-column-brand {
+  text-align: center;
+  justify-content: center;
+}
+
+td.mat-mdc-cell.mat-column-time {
+  text-align: left;
+  font-size: 13px;
+}
+td.mat-mdc-cell.mat-column-discount_type {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 450;
+}
+td.mat-mdc-cell.mat-column-discount_type ul {
+  margin-left: 20px;
+}
+.mat-column-promotion_id .promotion-id-container {
+  background-color: rgb(117, 117, 228);
+  margin: 0;
+  padding: 10px;
+  border-radius: 6px;
+  color: rgb(230, 230, 241);
+}
+.brand-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin: 10px;
+}
+
+.brand-badge {
+  background-color: #e0e0e0;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.action-button {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.custom-size-fab {
+  height: 40px;
+  padding: 0 16px;
+  line-height: 40px;
+  box-shadow: 1px 1px 1px gray;
+}

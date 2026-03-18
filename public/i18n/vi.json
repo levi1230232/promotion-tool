@@ -1,0 +1,21 @@
+{
+  "HOME": "Trang chủ",
+  "PROFILE": "Hồ sơ",
+  "CHANGE_PASSWORD": "Thay đổi mật khẩu",
+  "LOGOUT": "Đăng xuất",
+  "PROMOTIONS": "Khuyến mãi",
+  "VOUCHERS": "Mã giảm giá",
+  "SEARCH": "Tìm kiếm",
+  "RESET": "Cài lại",
+  "PROMOTION_ID": "Mã chương trình",
+  "NAME": "Tên chương trình",
+  "BRAND": "Tên thương hiệu",
+  "STATUS": "Trạng thái",
+  "TIME": "Thời gian áp dụng",
+  "END": "Ngày kết thúc", 
+  "VOUCHER_CODE": "Mã khuyến mãi",
+  "NO_DATA":"Không có dữ liệu",
+  "DISCOUNT_TYPE": "Loại giảm giá",
+  "FILTER": "Bộ lọc",
+  "NEW PROMOTION": "Tạo mới"
+}
