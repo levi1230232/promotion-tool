@@ -4,12 +4,12 @@
     <button mat-raised-button color="primary" type="button" (click)="openDialog()">
       <mat-icon>filter_alt </mat-icon>
       {{ 'FILTER' | translate }}
-      <span>({{ l < 0 ? '0' : l }})</span>
+      <span>({{ filterCount() }})</span>
     </button>
   </mat-card>
 
   <mat-card>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource()" class="mat-elevation-z8">
       <ng-container matColumnDef="promotion_id">
         <th mat-header-cell *matHeaderCellDef>{{ 'PROMOTION_ID' | translate }}</th>
         <td mat-cell *matCellDef="let element">
@@ -77,8 +77,9 @@
     </table>
 
     <mat-paginator
-      [length]="total"
-      [pageSize]="filter.size"
+      [length]="total()"
+      [pageSize]="filter().size"
+      [pageIndex]="filter().page - 1"
       [pageSizeOptions]="[10, 20, 50]"
       (page)="pageChange($event)"
     >

@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, signal, computed, effect } from '@angular/core';
+
 import { PromotionService } from '../../services/promotion.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -40,22 +41,16 @@ import { MatButtonModule } from '@angular/material/button';
 export class PromotionList implements OnInit {
   supportedLangs = ['en', 'vi'];
   currentLang = 'en';
-  displayedColumns: string[] = [
-    'promotion_id',
-    'name',
-    'brand',
-    'discount_type',
-    'time',
-    'status',
-    // 'end_date',
-  ];
+
+  displayedColumns = ['promotion_id', 'name', 'brand', 'discount_type', 'time', 'status'];
+
   statusList = ['ALL', 'ACTIVE', 'COMPLETED', 'PENDING', 'CANCELLED'];
   discountTypeList = ['ALL', 'AMOUNT', 'PERCENTAGE'];
 
-  dataSource: any[] = [];
-  total = 0;
+  dataSource = signal<any[]>([]);
+  total = signal<number>(0);
 
-  filter = {
+  filter = signal({
     promotion_id: '',
     page: 1,
     size: 20,
@@ -68,20 +63,31 @@ export class PromotionList implements OnInit {
     end_time_to: null as Date | null,
     start_time_from: null as Date | null,
     start_time_to: null as Date | null,
-  };
+  });
+
+  filterCount = computed(() => {
+    const skipKeys = ['page', 'size'];
+
+    return Object.entries(this.filter()).filter(
+      ([key, value]) => !skipKeys.includes(key) && value !== '' && value !== null,
+    ).length;
+  });
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private promotionService: PromotionService,
-    private cdr: ChangeDetectorRef,
     private translate: TranslateService,
     private dialog: MatDialog,
-  ) {}
+  ) {
+    effect(() => {
+      const params = this.buildParams(this.filter());
+      this.fetchPromotions(params);
+    });
+  }
 
   ngOnInit(): void {
     const savedLang = localStorage.getItem('lang') || 'en';
-
     this.currentLang = savedLang;
 
     this.translate.setFallbackLang('en');
@@ -92,8 +98,8 @@ export class PromotionList implements OnInit {
     if (savedFilter) {
       const parsed = JSON.parse(savedFilter);
 
-      this.filter = {
-        ...this.filter,
+      this.filter.set({
+        ...this.filter(),
         ...parsed,
         created_time_from: parsed.created_time_from ? new Date(parsed.created_time_from) : null,
         created_time_to: parsed.created_time_to ? new Date(parsed.created_time_to) : null,
@@ -101,11 +107,10 @@ export class PromotionList implements OnInit {
         end_time_to: parsed.end_time_to ? new Date(parsed.end_time_to) : null,
         start_time_from: parsed.start_time_from ? new Date(parsed.start_time_from) : null,
         start_time_to: parsed.start_time_to ? new Date(parsed.start_time_to) : null,
-      };
+      });
     }
-
-    this.loadData();
   }
+
   openDialog() {
     const dialogRef = this.dialog.open(Search, {
       width: '600px',
@@ -117,67 +122,44 @@ export class PromotionList implements OnInit {
             key: 'promotion_id',
             label: 'Promotion ID',
             type: 'text',
-            placeholder: 'EX: PR-9D2YLTWK',
           },
-
           {
             key: 'name',
             label: 'Name',
             type: 'text',
-            placeholder: 'EX: Giß║úm 10% to├án ─æ╞ín FOODBOOK',
           },
           { key: 'status_list', label: 'Status', type: 'select', options: this.statusList },
-
           {
             key: 'discount_type',
             label: 'Discount Type',
             type: 'select',
             options: this.discountTypeList,
           },
-
-          {
-            key: 'created_time',
-            label: 'Created Time',
-            type: 'date-range',
-          },
-          {
-            key: 'start_time',
-            label: 'Start Time',
-            type: 'date-range',
-          },
-          {
-            key: 'end_time',
-            label: 'End Time',
-            type: 'date-range',
-          },
+          { key: 'created_time', label: 'Created Time', type: 'date-range' },
+          { key: 'start_time', label: 'Start Time', type: 'date-range' },
+          { key: 'end_time', label: 'End Time', type: 'date-range' },
         ],
-        filter: { ...this.filter },
+        filter: { ...this.filter() },
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const { filter, isCleared } = result;
+      if (!result) return;
 
-        this.filter = {
-          ...this.filter,
-          ...filter,
-          page: 1,
-        };
+      const { filter, isCleared } = result;
 
-        if (this.paginator) {
-          this.paginator.pageIndex = 0;
-        }
+      this.filter.update((prev) => ({
+        ...prev,
+        ...filter,
+        page: 1,
+      }));
 
-        if (!isCleared) {
-          this.saveFilter();
-        }
-        this.cdr.detectChanges();
-
-        this.loadData();
+      if (!isCleared) {
+        this.saveFilter();
       }
     });
   }
+
   formatDate(date: Date | null) {
     if (!date) return null;
 
@@ -194,80 +176,51 @@ export class PromotionList implements OnInit {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
-  buildParams() {
+  buildParams(filter: any) {
     const params: any = {
-      page: this.filter.page,
-      size: this.filter.size,
+      page: filter.page,
+      size: filter.size,
     };
 
-    if (this.filter.promotion_id) {
-      params.promotion_id = this.filter.promotion_id;
-    }
-    if (this.filter.status_list) {
-      params.status_list = this.filter.status_list;
-    }
-    if (this.filter.name) {
-      params.name = this.filter.name;
-    }
-    if (this.filter.discount_type) {
-      params.discount_type = this.filter.discount_type;
-    }
-    if (this.filter.created_time_from) {
-      params.created_time_from = this.formatDate(this.filter.created_time_from);
-    }
+    if (filter.promotion_id) params.promotion_id = filter.promotion_id;
+    if (filter.status_list) params.status_list = filter.status_list;
+    if (filter.name) params.name = filter.name;
+    if (filter.discount_type) params.discount_type = filter.discount_type;
 
-    if (this.filter.created_time_to) {
-      params.created_time_to = this.formatDate(this.filter.created_time_to);
-    }
+    if (filter.created_time_from)
+      params.created_time_from = this.formatDate(filter.created_time_from);
 
-    if (this.filter.end_time_from) {
-      params.end_time_from = this.formatDate(this.filter.end_time_from);
-    }
+    if (filter.created_time_to) params.created_time_to = this.formatDate(filter.created_time_to);
 
-    if (this.filter.end_time_to) {
-      params.end_time_to = this.formatDate(this.filter.end_time_to);
-    }
-    if (this.filter.start_time_from) {
-      params.start_time_from = this.formatDate(this.filter.start_time_from);
-    }
+    if (filter.end_time_from) params.end_time_from = this.formatDate(filter.end_time_from);
 
-    if (this.filter.start_time_to) {
-      params.start_time_to = this.formatDate(this.filter.start_time_to);
-    }
+    if (filter.end_time_to) params.end_time_to = this.formatDate(filter.end_time_to);
+
+    if (filter.start_time_from) params.start_time_from = this.formatDate(filter.start_time_from);
+
+    if (filter.start_time_to) params.start_time_to = this.formatDate(filter.start_time_to);
 
     return params;
   }
-  saveFilter() {
-    localStorage.setItem('promotionsFilter', JSON.stringify(this.filter));
-  }
-  loadData() {
-    const params = this.buildParams();
 
+  fetchPromotions(params: any) {
     this.promotionService.getPromotion(params).subscribe((res: any) => {
-      this.dataSource = res.data.promotions || [];
-      this.total = res.data.totalElement || 0;
-
-      this.filter.page = res.data.currentPage;
-      this.filter.size = res.data.pageSize;
-
-      this.cdr.detectChanges();
+      this.dataSource.set(res.data.promotions || []);
+      this.total.set(res.data.totalElement || 0);
     });
   }
-  get filterCount(): number {
-    const skipKeys = ['page', 'size'];
-    return Object.keys(this.filter).filter(
-      (key) =>
-        !skipKeys.includes(key) &&
-        this.filter[key as keyof typeof this.filter] !== '' &&
-        this.filter[key as keyof typeof this.filter] !== null,
-    ).length;
+
+  saveFilter() {
+    localStorage.setItem('promotionsFilter', JSON.stringify(this.filter()));
   }
 
   pageChange(event: PageEvent) {
-    this.filter.page = event.pageIndex + 1;
-    this.filter.size = event.pageSize;
-    this.saveFilter();
+    this.filter.update((f) => ({
+      ...f,
+      page: event.pageIndex + 1,
+      size: event.pageSize,
+    }));
 
-    this.loadData();
+    this.saveFilter();
   }
 }
