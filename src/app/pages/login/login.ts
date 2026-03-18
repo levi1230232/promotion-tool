@@ -37,7 +37,7 @@ export class Login {
 
   login() {
     if (!this.username() || !this.password()) {
-      this.errorMessage.set('Vui l├▓ng nhß║¡p username v├á password');
+      this.errorMessage.set('Vui lòng nhập username và password');
       return;
     }
 
@@ -49,7 +49,7 @@ export class Login {
         this.loading.set(false);
 
         if (res?.error) {
-          const rawMessage = res.error.message || 'T├ái khoß║ún hoß║╖c mß║¡t khß║⌐u kh├┤ng ─æ├║ng';
+          const rawMessage = res.error.message || 'Tài khoản hoặc mật khẩu không đúng';
           this.errorMessage.set(rawMessage.split('TrackId')[0].trim());
           return;
         }
@@ -58,7 +58,7 @@ export class Login {
           this.authService.saveToken(res.data.token);
           this.router.navigate(['/promotions']);
         } else {
-          this.errorMessage.set('Phß║ún hß╗ôi tß╗½ server kh├┤ng hß╗úp lß╗ç');
+          this.errorMessage.set('Không có phản hồi từ serve');
         }
       },
       error: (err) => {
@@ -69,7 +69,7 @@ export class Login {
         if (errorBody?.error?.message) {
           this.errorMessage.set(errorBody.error.message.split('TrackId')[0].trim());
         } else {
-          this.errorMessage.set('Kh├┤ng thß╗â kß║┐t nß╗æi ─æß║┐n m├íy chß╗º');
+          this.errorMessage.set('Không thể kết nối tới serve');
         }
       },
     });
